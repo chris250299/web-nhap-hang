@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>[Bài tập] Ứng dụng quản lý sản phẩm sử dụng mảng</title>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        .abc {
+            width: 250px;
+        }
+
+        .del {
+            display: none;
+        }
+
+        .button {
+            cursor: pointer;
+            border: none;
+            background-color: black;
+            color: white;
+            margin: 5px;
+            font: bold 12px Verdana;
+            width: 60px;
+            height: 50px;
+            border-radius: 8px;
+
+        }
+        .button1{
+            cursor: pointer;
+            border: none;
+            background-color: black;
+            color: white;
+            border-radius: 8px;
+
+        }
+
+        .input {
+            width: 200px;
+            height: 50px;
+            border-color: black;
+            border-radius: 8px;
+        }
+
+        table {
+            border: 1px solid black;
+            width:  50%;
+            height: 230px;
+            text-align: center;
+
+        }
+        tr:nth-child(odd){
+            background-color: #ddd;
+            width: 100%;
+        }
+        tr:hover {
+            background-color: gray;
+        }
+        body{
+            background-color: #bababa;
+        }
+
+    </style>
+</head>
+<body>
+<form>
+    <h2>Add New Product</h2>
+    <input type="text" id="product" class="input" placeholder="New Product">
+    <input type="button" id="add" class="button" value="Add" onclick="myDisplay.add();">
+    <br/>
+    <br/>
+    <center>
+    <h2>Display All Product</h2>
+
+    <table>
+        <tr>
+            <td class="abc"> <b>Product Name</b></td>
+            <td colspan="2">
+                <div id="productAmount"></div>
+            </td>
+
+        </tr>
+        <tr >
+            <tbody id="products">
+            </tbody>
+        </tr>
+    </table>
+    </center>
+    <div id="edit" class="del">
+        <h2>Edit Product</h2><br/>
+        <input type="text" id="editText" placeholder="Edit" class="input">
+        <input type="button" id="editBtn" value="Edit" class="button"><br/>
+        <input type="button" id="cancel" value="X" class="button1" onclick="myDisplay.hide();">
+    </div>
+
+</form>
+<script>
+    var Display = function () {
+        this.product = ["Samsung Galaxy Note 9", "Oppo A7", "iPhone Xr", "Nokia 3.1", "Xiao Mi 8"];
+        this.info = document.getElementById("products");
+        this.count = function (data) {
+            document.getElementById("productAmount").innerHTML = '';
+            if (data > 1) {
+                document.getElementById("productAmount").innerHTML += data + " products";
+            } else {
+                document.getElementById("productAmount").innerHTML += "No product";
+            }
+        };
+        this.addTable = function () {
+            var addTable = '';
+            for (let i = 0; i < this.product.length; i++) {
+                addTable += "<tr>";
+                addTable += "<td>" + "<i>"+ this.product[i] + "</i>" + "</td>";
+                addTable += "<td>" + "<input type='button' value='Edit' class='button1' onclick='myDisplay.edit(" + i + ")'>" + "</td>";
+                addTable += "<td>" + "<input type='button' value='Delete' class='button1' onclick='myDisplay.delete(" + i + ")'>" + "</td>";
+                addTable += "</tr>";
+            }
+            this.count(this.product.length);
+            this.info.innerHTML = addTable;
+        };
+        this.add = function () {
+            var newProduct = document.getElementById("product").value;
+            if (!newProduct) {
+                alert("Please enter the new product.");
+            } else {
+                this.product.push(newProduct);
+                this.addTable()
+            }
+            // this.addTable();
+        };
+        this.edit = function (item) {
+            var edit1 = document.getElementById("editText");
+            var myObj = this;
+            document.getElementById('edit').style.display = 'block';
+            edit1.value = this.product[item];
+            document.getElementById('editBtn').onclick = function () {
+                myObj.product[item] = edit1.value;
+                myObj.addTable();
+            }
+        };
+        this.delete = function (item) {
+            var find = this.product.indexOf(this.product[item]);
+            console.log(find);
+            if (find > -1) {
+                this.product.splice(find, 1);
+            }
+            this.addTable();
+        };
+        this.hide = function () {
+            document.getElementById("edit").style.display = 'none';
+
+
+        }
+    };
+    var myDisplay = new Display();
+    myDisplay.addTable();
+</script>
+
+</body>
+</html>
